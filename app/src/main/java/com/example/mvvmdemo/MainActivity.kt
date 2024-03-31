@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mvvmdemo.databinding.ActivityMainBinding
 import com.example.mvvmdemo.repository.QuoteRepository
 import com.example.mvvmdemo.roomdatabase.Quote
-import com.example.mvvmdemo.roomdatabase.QuoteDao
 import com.example.mvvmdemo.roomdatabase.QuoteDatabase
 import com.example.mvvmdemo.viewmodel.MainViewModel
 import com.example.mvvmdemo.viewmodel.MainViewModelFactory
@@ -40,14 +39,16 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getQuotes().observe(this, Observer {
             // binding.quote = it.toString()
 
-            val allQuotes = it.joinToString("\n") { it.text }
+            val allQuotes = it.joinToString("\n\n") { it.text }
             binding.quote = allQuotes
         })
 
         binding.button.setOnClickListener {
+
             val myQuote = binding.edtNewQuote.text
-            if(myQuote != null) {
-                val quote = Quote(0, "$myQuote", "You")
+
+            if(myQuote.isNotEmpty()) {
+                val quote = Quote(0, "$myQuote", "Me")
                 mainViewModel.insertQuote(quote)
                 binding.edtNewQuote.text = null
             }
